@@ -1,0 +1,29 @@
+@media screen and (max-width: 576px) {
+    /* search book */
+    .search_book > form {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        padding: 0;
+    }
+
+    .search_book > form > input {
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .search_book > form > button {
+        width: 100%;
+    }
+
+    /* bookshelf */
+    .book_shelf > .book_list {
+        padding: 0;
+    }
+
+    .book_shelf > .book_list > .book_item > .action {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+}
