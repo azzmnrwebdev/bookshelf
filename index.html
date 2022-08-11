@@ -26,27 +26,28 @@
             <h2>Masukan Buku Baru</h2>
             <form id="inputBook">
                 <div class="input">
-                    <label for="inputBookTitle">Judul</label>
-                    <input type="text" id="inputBookTitle" maxlength="45" required />
+                    <label for="title">Judul</label>
+                    <input type="text" id="title" maxlength="45" required />
                 </div>
 
                 <div class="input">
-                    <label for="inputBookAuthor">Penulis</label>
-                    <input type="text" id="inputBookAuthor" maxlength="45" required />
+                    <label for="author">Penulis</label>
+                    <input type="text" id="author" maxlength="45" required />
                 </div>
 
                 <div class="input">
-                    <label for="inputBookYear">Tahun</label>
-                    <input type="number" id="inputBookYear" required />
+                    <label for="year">Tahun</label>
+                    <input type="number" id="year" required />
                 </div>
 
                 <div class="input inline">
-                    <label for="bookIsComplete">Selesai dibaca</label>
-                    <input type="checkbox" id="bookIsComplete" />
+                    <label for="bookIsCompleted">Selesai dibaca</label>
+                    <input type="checkbox" id="bookIsCompleted" />
                 </div>
 
                 <button type="submit" id="bookSubmit">Masukkan Buku ke rak <strong>Belum selesai
                         dibaca</strong></button>
+                <input type="hidden" id="bookId" />
             </form>
         </section>
 
@@ -64,62 +65,14 @@
         <section class="book_shelf">
             <h2>Belum selesai dibaca</h2>
 
-            <div id="books" class="book_list">
-                <article class="book_item">
-                    <h3>Book Title</h3>
-                    <p>Penulis: John Doe</p>
-                    <p>Tahun: 2002</p>
-
-                    <div class="action">
-                        <button class="btn btn_success">Selesai Dibaca</button>
-                        <button class="btn btn_warning">Edit Buku</button>
-                        <button class="btn btn_danger">Hapus Buku</button>
-                    </div>
-                </article>
-
-                <article class="book_item">
-                    <h3>Book Title</h3>
-                    <p>Penulis: John Doe</p>
-                    <p>Tahun: 2002</p>
-
-                    <div class="action">
-                        <button class="btn btn_success">Selesai Dibaca</button>
-                        <button class="btn btn_warning">Edit Buku</button>
-                        <button class="btn btn_danger">Hapus Buku</button>
-                    </div>
-                </article>
-            </div>
+            <div id="belumSelesaiDibaca" class="book_list"></div>
         </section>
 
         <!-- section untuk buku yang selesai dibaca -->
         <section class="book_shelf">
             <h2>Selesai dibaca</h2>
 
-            <div id="completedBooks" class="book_list">
-                <article class="book_item">
-                    <h3>Book Title</h3>
-                    <p>Penulis: John Doe</p>
-                    <p>Tahun: 2002</p>
-
-                    <div class="action">
-                        <button class="btn btn_success">Belum Selesai Dibaca</button>
-                        <button class="btn btn_warning">Edit Buku</button>
-                        <button class="btn btn_danger">Hapus Buku</button>
-                    </div>
-                </article>
-
-                <article class="book_item">
-                    <h3>Book Title</h3>
-                    <p>Penulis: John Doe</p>
-                    <p>Tahun: 2002</p>
-
-                    <div class="action">
-                        <button class="btn btn_success">Belum Selesai Dibaca</button>
-                        <button class="btn btn_warning">Edit Buku</button>
-                        <button class="btn btn_danger">Hapus Buku</button>
-                    </div>
-                </article>
-            </div>
+            <div id="selesaiDibaca" class="book_list"></div>
         </section>
     </main>
 

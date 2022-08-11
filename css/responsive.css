@@ -20,10 +20,4 @@
     .book_shelf > .book_list {
         padding: 0;
     }
-
-    .book_shelf > .book_list > .book_item > .action {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-    }
 }

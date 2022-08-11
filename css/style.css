@@ -178,6 +178,9 @@ section:last-child {
 
 .book_shelf > .book_list > .book_item > .action {
     margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
 .book_shelf > .book_list > .book_item > .action > .btn {
