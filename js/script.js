@@ -4,9 +4,34 @@ const SEARCH_EVENTS = "search-book";
 const STORAGE_KEY = "BOOKS_APPS";
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("inputBook").addEventListener("submit", (e) => {
+  const inputBook = document.getElementById("inputBook");
+  const judul = document.getElementById("title");
+  const penulis = document.getElementById("author");
+  const tahun = document.getElementById("year");
+  const bookSubmitBook = document.getElementById("bookSubmit");
+
+  inputBook.addEventListener("input", () => {
+    if (judul.value !== "" && penulis.value !== "" && tahun.value !== "") {
+      bookSubmitBook.removeAttribute("disabled");
+      bookSubmitBook.style.backgroundColor = `#6495ED`;
+    } else {
+      bookSubmitBook.setAttribute("disabled", "");
+      bookSubmitBook.style.backgroundColor = `#c3c1c1`;
+    }
+  });
+
+  inputBook.addEventListener("submit", (e) => {
     e.preventDefault();
-    createBook();
+    const bookID = document.getElementById("bookId").value;
+    if (bookID) {
+      updateBook();
+    } else {
+      createBook();
+    }
+
+    bookSubmitBook.setAttribute("disabled", "");
+    bookSubmitBook.style.backgroundColor = `#c3c1c1`;
+    e.target.reset();
   });
 
   document.getElementById("searchBook").addEventListener("submit", (e) => {
@@ -20,102 +45,147 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener(RENDER_EVENTS, () => {
-  const belumDibaca = document.getElementById("belumSelesaiDibaca");
-  belumDibaca.innerHTML = "";
+  const unfinished = document.getElementById("unFinished");
+  unfinished.innerHTML = "";
 
-  const selesaiDibaca = document.getElementById("selesaiDibaca");
-  selesaiDibaca.innerHTML = "";
-
-  // books.forEach((book) => {
-  //   const bookElement = makeBook(book);
-  //   book.isBookCompleted
-  //     ? selesaiDibaca.append(bookElement)
-  //     : belumDibaca.append(bookElement);
-  // })
+  const finished = document.getElementById("finished");
+  finished.innerHTML = "";
 
   for (const book of books) {
     const bookElement = makeBook(book);
-    if (book.isBookCompleted) {
-      selesaiDibaca.append(bookElement);
+    if (book.isCompleted) {
+      finished.append(bookElement);
     } else {
-      belumDibaca.append(bookElement);
+      unfinished.append(bookElement);
     }
   }
+
+  saveData();
 });
 
 document.addEventListener(SEARCH_EVENTS, () => {
-  const belumDibaca = document.getElementById("belumSelesaiDibaca");
-  belumDibaca.innerHTML = "";
+  const unfinished = document.getElementById("unFinished");
+  unfinished.innerHTML = "";
 
-  const selesaiDibaca = document.getElementById("selesaiDibaca");
-  selesaiDibaca.innerHTML = "";
+  const finished = document.getElementById("finished");
+  finished.innerHTML = "";
 
   //
 });
 
 /**
- * CRUD Operations
- * - createBook() untuk membuat data buku baru ke dalam array books
- * - editBook() untuk ...
- * -
- * - destroyBook() untuk ...
+ * CRUD OPERATION:
+ *
+ * - createBook() function untuk membuat data buku baru ke dalam array books
+ * - editBook() function untuk memunculkan data lama ke formBook sesuai id
+ * - updateBook() function berisi logika untuk mengubah data lama menjadi data ter-update
+ * - destroyBook() function untuk menghapus data book
+ * - toggleBook()  function untuk berpindah-pindah dari isCompleted nya false ke true dan sebaliknya
  */
 const createBook = () => {
-  const { title, author, year, isBookCompleted } = getValueInputBook();
-
+  const formBook = getValueInputBook();
   const book = {
     id: generateId(),
-    title,
-    author,
-    year,
-    isBookCompleted,
+    title: formBook.title,
+    author: formBook.author,
+    year: formBook.year,
+    isCompleted: formBook.isCompleted,
   };
 
   books.push(book);
   document.dispatchEvent(new Event(RENDER_EVENTS));
 };
 
-const editBook = () => {
-  //
+const editBook = (id) => {
+  const book = books.find((book) => book.id === id);
+  document.getElementById("bookId").value = book.id;
+  document.getElementById("title").value = book.title;
+  document.getElementById("author").value = book.author;
+  document.getElementById("year").value = book.year;
+  document.getElementById("bookIsCompleted").checked = book.isCompleted;
+  document.getElementById("bookSubmit").innerText = "Edit Book";
+  document.getElementById("bookSubmit").removeAttribute("disabled");
+  document.getElementById("bookSubmit").style.backgroundColor = `#6495ED`;
 };
 
-const destroyBook = () => {
-  //
+const updateBook = () => {
+  const formBook = getValueInputBook();
+
+  const index = books.findIndex((book) => book.id === parseInt(formBook.id));
+  books[index] = {
+    ...books[index],
+    title: formBook.title,
+    author: formBook.author,
+    year: formBook.year,
+    isCompleted: formBook.isCompleted,
+  };
+
+  document.dispatchEvent(new Event(RENDER_EVENTS));
+  formBook.button.innerHTML =
+    "Masukkan Buku ke rak <strong>Belum selesai dibaca</strong>";
+};
+
+const destroyBook = (id) => {
+  if (confirm("Are you sure to delete this data?")) {
+    const bookTarget = books.findIndex((book) => book.id === id);
+    books.splice(bookTarget, 1);
+  }
+  document.dispatchEvent(new Event(RENDER_EVENTS));
 };
 
 const toggleBook = (id) => {
   const book = books.find((book) => book.id === id);
-  book.isBookCompleted = !book.isBookCompleted;
+  book.isCompleted = !book.isCompleted;
   document.dispatchEvent(new Event(RENDER_EVENTS));
 };
 
-// function untuk menghasilkan identitas unik pada setiap item buku
-const generateId = () => +new Date();
-
-// utility function untuk mendapatkan value yang dihasilkan oleh user
-const getValueInputBook = () => {
-  const form = document.getElementById("inputBook");
-  const id = document.getElementById("bookId").value;
-  const title = document.getElementById("title").value;
-  const author = document.getElementById("author").value;
-  const year = document.getElementById("year").value;
-  const isBookCompleted = document.getElementById("bookIsCompleted").checked;
-  const button = document.getElementById("bookSubmit");
-
-  return {
-    form,
-    id,
-    title,
-    author,
-    year,
-    isBookCompleted,
-    button,
-  };
+const searchBook = () => {
+  //
 };
 
-// function untuk membuat tampilan informasi buku
+/**
+ * UTILITY FUNCTION:
+ *
+ * - generateId() function untuk menghasilkan identitas / id yang unik pada setiap item buku
+ * - getValueInputBook() function untuk mendapatkan value yang diinputkan dari user
+ */
+const generateId = () => {
+  return +new Date();
+};
+
+const getValueInputBook = () => {
+  const formBook = {};
+  formBook["id"] = document.getElementById("bookId").value;
+  formBook["title"] = document.getElementById("title").value;
+  formBook["author"] = document.getElementById("author").value;
+  formBook["year"] = document.getElementById("year").value;
+  formBook["isCompleted"] = document.getElementById("bookIsCompleted").checked;
+  formBook["button"] = document.getElementById("bookSubmit");
+
+  return formBook;
+};
+
+/**
+ * RENDER ELEMEN HTML ITEM BOOK:
+ *
+ * - makeBook(param) function untuk membuat item book dengan createElement HTML lalu ditampilkan ke browser,
+ * dengan cara menggunakan method 'append()'
+ *
+ * var 'boxItem' membuat article sebagai pembungkus data buku, seperti title, author, year dan button action
+ * var 'title' menampilkan judul buku yang data nya diambil dari param bernama 'book'
+ * var 'author' menampilkan nama penulis yang data nya diambil dari param bernama 'book'
+ * var 'year' menampilkan tahun buku yang data nya diambil dari param bernama 'book'
+ * var 'divButton' membuat div sebagai pembungkus button aksi dengan class 'action'
+ * var 'editButton' button untuk edit data dengan nama class 'btn btn-warning'
+ * var 'deleteButton' button untuk hapus data dengan nama class 'btn btn-danger'
+ *
+ * ada pengkondisian jika isCompleted = true, maka var 'unreadButton' bertulisan 'Belum selesai dibaca,
+ * sedangkan jika isCompleted = false, maka var 'readButton' bertulisan 'Selesai dibaca'
+ *
+ * @param {Object} book
+ * @returns var 'bookItem'
+ */
 const makeBook = (book) => {
-  // membuat element untuk judul, penulis, dan tahun
   const title = document.createElement("h3");
   title.innerText = book.title;
 
@@ -125,12 +195,11 @@ const makeBook = (book) => {
   const year = document.createElement("p");
   year.innerText = `Tahun: ${book.year}`;
 
-  // membuat elemen button aksi di dalam div
   const divButton = document.createElement("div");
   divButton.classList.add("action");
 
   const editButton = document.createElement("button");
-  editButton.classList.add("btn", "btn_warning");
+  editButton.classList.add("btn", "btn-warning");
   editButton.innerHTML = "Edit Buku";
 
   editButton.addEventListener("click", () => {
@@ -138,20 +207,20 @@ const makeBook = (book) => {
   });
 
   const deleteButton = document.createElement("button");
-  deleteButton.classList.add("btn", "btn_danger");
+  deleteButton.classList.add("btn", "btn-danger");
   deleteButton.innerText = "Hapus Buku";
 
   deleteButton.addEventListener("click", () => {
     destroyBook(book.id);
   });
 
-  // membuat elemen book item
   const bookItem = document.createElement("article");
-  bookItem.classList.add("book_item");
+  bookItem.classList.add("book-item");
 
-  if (book.isBookCompleted) {
+  if (book.isCompleted) {
+    title.style.textDecoration = "line-through";
     const unreadButton = document.createElement("button");
-    unreadButton.classList.add("btn", "btn_success");
+    unreadButton.classList.add("btn", "btn-success");
     unreadButton.innerText = "Belum selesai dibaca";
 
     unreadButton.addEventListener("click", () => {
@@ -161,7 +230,7 @@ const makeBook = (book) => {
     divButton.append(unreadButton);
   } else {
     const readButton = document.createElement("button");
-    readButton.classList.add("btn", "btn_success");
+    readButton.classList.add("btn", "btn-success");
     readButton.innerHTML = "Selesai Dibaca";
 
     readButton.addEventListener("click", () => {
@@ -177,7 +246,20 @@ const makeBook = (book) => {
   return bookItem;
 };
 
-// function untuk mengecek apakah browser yang digunakan mendukung 'Web Storage' atau tidak
+/**
+ * WEB STORAGE:
+ *
+ * - saveData() function untuk save data ke localStorage dalam bentuk tipe data string yang sudah di parsed
+ * - isStorageExist() function untuk mengecek apakah browser yang digunakan mendukung 'Web Storage' atau tidak
+ * - loadDataFromStorage() function ...
+ */
+function saveData() {
+  if (isStorageExist()) {
+    const parsed = JSON.stringify(books);
+    localStorage.setItem(STORAGE_KEY, parsed);
+  }
+}
+
 const isStorageExist = () => {
   if (typeof Storage === undefined) {
     alert("Browser kamu tidak mendukung local storage");
@@ -187,5 +269,14 @@ const isStorageExist = () => {
 };
 
 const loadDataFromStorage = () => {
-  // 
+  const serializedData = localStorage.getItem(STORAGE_KEY);
+  let data = JSON.parse(serializedData);
+
+  if (data !== null) {
+    for (const book of data) {
+      books.push(book);
+    }
+  }
+
+  document.dispatchEvent(new Event(RENDER_EVENTS));
 };

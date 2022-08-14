@@ -4,6 +4,25 @@
     --primaryColor: #6495ED;
 }
 
+::-webkit-scrollbar {
+    width: 13px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 100vw;
+    margin-block: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #cccccc;
+    border-radius: 100vw;
+    border: 2px solid #fff;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: lightslategrey;
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -39,42 +58,49 @@ section {
     padding: 1.5rem 1rem;
 }
 
+section h2 {
+    color: var(--primaryColor);
+}
+
 section:last-child {
     margin-bottom: 0;
 }
 
-/* section input book */
-.input_book > h2 {
-    color: var(--primaryColor);
+.text-center {
     text-align: center;
 }
 
-.input_book > form {
+/* section input book */
+.form-book {
     width: 100%;
     margin-top: 1rem;
 }
 
-.input_book > form > .input {
+.form-book .input {
     margin-bottom: 1rem;
 }
 
-.input_book > form > .inline {
+.form-book .inline {
     position: relative;
 }
 
-.input_book > form > .inline > input {
+.form-book .inline input {
     position: absolute;
     margin-left: 8px;
     margin-top: 4px;
 }
 
-.input_book > form > .input > label {
+.form-book .input .form-label {
     color: var(--primaryColor);
     font-weight: 600;
 }
 
-.input_book > form > .input > input[type="text"],
-.input_book > form > .input > input[type="number"] {
+.form-book .input .form-label span {
+    color: red;
+}
+
+.form-book .input .form-control[type="text"],
+.form-book .input .form-control[type="number"] {
     width: 100%;
     border-radius: 5px;
     padding: 0.625rem;
@@ -83,14 +109,14 @@ section:last-child {
     font-size: 1rem;
 }
 
-.input_book > form > .input > input:focus,
-.input_book > form > .input > input:active {
+.form-book .input .form-control:focus,
+.form-book .input .form-control:active {
     outline: none;
     border-color: var(--primaryColor);
 }
 
-.input_book > form > button {
-    background-color: var(--primaryColor);
+.form-book button {
+    background-color: #c3c1c1;
     color: #fff;
     border-radius: 5px;
     font-size: 1rem;
@@ -100,18 +126,8 @@ section:last-child {
     cursor: pointer;
 }
 
-.input_book > form > button:hover {
-    background-color: #4179e2;
-    transition: all 0.5s ease-in;
-}
-
 /* section search book */
-.search_book > h2 {
-    color: var(--primaryColor);
-    text-align: center;
-}
-
-.search_book > form {
+.form-search-book {
     width: 100%;
     margin-top: 1rem;
     padding: 0 2rem;
@@ -120,12 +136,12 @@ section:last-child {
     gap: 10px;
 }
 
-.search_book > form > label {
+.form-search-book label {
     color: var(--primaryColor);
     font-weight: 600;
 }
 
-.search_book > form > input {
+.form-search-book input {
     width: 100%;
     border-radius: 5px;
     padding: 0.625rem;
@@ -133,13 +149,13 @@ section:last-child {
     font-size: 1rem;
 }
 
-.search_book > form > input:focus,
-.search_book > form > input:active {
+.form-search-book input:focus,
+.form-search-book input:active {
     outline: none;
     border-color: var(--primaryColor);
 }
 
-.search_book > form > button {
+.form-search-book button {
     width: 60%;
     background-color: var(--primaryColor);
     color: #fff;
@@ -150,40 +166,31 @@ section:last-child {
     cursor: pointer;
 }
 
-.search_book > form > button:hover {
-    background-color: #4179e2;
-    transition: all 0.5s ease-in;
-}
-
 /* section untuk bookshelf */
-.book_shelf > h2 {
-    color: var(--primaryColor);
-}
-
-.book_shelf > .book_list {
+.bookshelf .book-list {
     padding: 0 1rem;
     margin-top: 2rem;
 }
 
-.book_shelf > .book_list > .book_item {
+.bookshelf .book-list .book-item {
     padding: 1rem;
     border: 1px solid #4179e2;
     border-radius: 10px;
     margin-bottom: 1rem;
 }
 
-.book_shelf > .book_list > .book_item:last-child {
+.bookshelf .book-list .book-item:last-child {
     margin-bottom: 0;
 }
 
-.book_shelf > .book_list > .book_item > .action {
+.bookshelf .book-list .book-item .action {
     margin-top: 15px;
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
 }
 
-.book_shelf > .book_list > .book_item > .action > .btn {
+.bookshelf .book-list .book-item .action .btn {
     padding: 0.5rem;
     border-radius: 5px;
     font-size: 1rem;
@@ -191,16 +198,16 @@ section:last-child {
     cursor: pointer;
 }
 
-.book_shelf > .book_list > .book_item > .action > .btn_success {
+.bookshelf .book-list .book-item .action .btn-success {
     background-color: green;
     color: #fff;
 }
 
-.book_shelf > .book_list > .book_item > .action > .btn_warning {
+.bookshelf .book-list .book-item .action .btn-warning {
     background-color: yellow;
 }
 
-.book_shelf > .book_list > .book_item > .action > .btn_danger {
+.bookshelf .book-list .book-item .action .btn-danger {
     background-color: red;
     color: #fff
 }
