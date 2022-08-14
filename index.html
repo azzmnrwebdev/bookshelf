@@ -22,57 +22,60 @@
 
     <main>
         <!-- section untuk form input buku -->
-        <section class="input_book">
-            <h2>Masukan Buku Baru</h2>
-            <form id="inputBook">
+        <section>
+            <h2 class="text-center">Masukan Buku Baru</h2>
+            <form id="inputBook" class="form-book" autocomplete="off">
                 <div class="input">
-                    <label for="title">Judul</label>
-                    <input type="text" id="title" maxlength="45" required />
+                    <label for="title" class="form-label">Judul <span class="text-danger">*</span></label>
+                    <input type="text" id="title" class="form-control" placeholder="apa judul buku nya?"
+                        maxlength="45" />
                 </div>
 
                 <div class="input">
-                    <label for="author">Penulis</label>
-                    <input type="text" id="author" maxlength="45" required />
+                    <label for="author" class="form-label">Penulis <span class="text-danger">*</span></label>
+                    <input type="text" id="author" class="form-control" placeholder="siapa nama penulis buku?"
+                        maxlength="45" />
                 </div>
 
                 <div class="input">
-                    <label for="year">Tahun</label>
-                    <input type="number" id="year" required />
+                    <label for="year" class="form-label">Tahun <span class="text-danger">*</span></label>
+                    <input type="number" id="year" class="form-control" placeholder="kapan buku diterbitkan?" min="1800"
+                        max="2022" />
                 </div>
 
                 <div class="input inline">
-                    <label for="bookIsCompleted">Selesai dibaca</label>
+                    <label for="bookIsCompleted" class="form-label">Selesai dibaca</label>
                     <input type="checkbox" id="bookIsCompleted" />
                 </div>
 
-                <button type="submit" id="bookSubmit">Masukkan Buku ke rak <strong>Belum selesai
+                <button type="submit" id="bookSubmit" disabled>Masukkan Buku ke rak <strong>Belum selesai
                         dibaca</strong></button>
                 <input type="hidden" id="bookId" />
             </form>
         </section>
 
         <!-- section untuk form cari buku -->
-        <section class="search_book">
-            <h2>Cari Buku (Opsional)</h2>
-            <form id="searchBook">
+        <section>
+            <h2 class="text-center">Cari Buku (Opsional)</h2>
+            <form id="searchBook" class="form-search-book">
                 <label for="searchBookTitle">Judul</label>
-                <input type="text" id="searchBookTitle" />
+                <input type="text" id="searchBookTitle" maxlength="45" placeholder="ketik judul buku yang diinginkan" />
                 <button type="submit" id="searchSubmit">Cari</button>
             </form>
         </section>
 
         <!-- section untuk buku yang belum selesai dibaca -->
-        <section class="book_shelf">
+        <section class="bookshelf">
             <h2>Belum selesai dibaca</h2>
 
-            <div id="belumSelesaiDibaca" class="book_list"></div>
+            <div id="unFinished" class="book-list"></div>
         </section>
 
         <!-- section untuk buku yang selesai dibaca -->
-        <section class="book_shelf">
+        <section class="bookshelf">
             <h2>Selesai dibaca</h2>
 
-            <div id="selesaiDibaca" class="book_list"></div>
+            <div id="finished" class="book-list"></div>
         </section>
     </main>
 
