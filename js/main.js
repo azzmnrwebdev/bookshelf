@@ -1,26 +1,24 @@
 const books = [];
 const RENDER_EVENTS = "render-book";
-const SEARCH_EVENTS = "search-book";
 const STORAGE_KEY = "BOOKS_APPS";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const inputBook = document.getElementById("inputBook");
-  const judul = document.getElementById("title");
-  const penulis = document.getElementById("author");
-  const tahun = document.getElementById("year");
+  const title = document.getElementById("inputBookTitle");
+  const author = document.getElementById("inputBookAuthor");
+  const year = document.getElementById("inputBookYear");
   const bookSubmitBook = document.getElementById("bookSubmit");
 
-  inputBook.addEventListener("input", () => {
-    if (judul.value !== "" && penulis.value !== "" && tahun.value !== "") {
+  document.getElementById("inputBook").addEventListener("input", () => {
+    if (title.value !== "" && author.value !== "" && year.value !== "") {
       bookSubmitBook.removeAttribute("disabled");
-      bookSubmitBook.style.backgroundColor = `#6495ED`;
+      bookSubmitBook.style.backgroundColor = "cornflowerblue";
     } else {
       bookSubmitBook.setAttribute("disabled", "");
-      bookSubmitBook.style.backgroundColor = `#c3c1c1`;
+      bookSubmitBook.style.backgroundColor = `#aeaeae`;
     }
   });
 
-  inputBook.addEventListener("submit", (e) => {
+  document.getElementById("inputBook").addEventListener("submit", (e) => {
     e.preventDefault();
     const bookID = document.getElementById("bookId").value;
     if (bookID) {
@@ -30,13 +28,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     bookSubmitBook.setAttribute("disabled", "");
-    bookSubmitBook.style.backgroundColor = `#c3c1c1`;
+    bookSubmitBook.style.backgroundColor = `#aeaeae`;
     e.target.reset();
+  });
+
+  document.getElementById("searchBookTitle").addEventListener("keyup", (e) => {
+    const list = e.target.value.toLowerCase();
+    let keyword = document.querySelectorAll(".book_item");
+    keyword.forEach((book) => {
+      const buku = book.firstChild.textContent.toLocaleLowerCase();
+      if (buku.indexOf(list) != -1) {
+        book.setAttribute("style", "display: block;");
+      } else {
+        book.setAttribute("style", "display: none !important;");
+      }
+    });
   });
 
   document.getElementById("searchBook").addEventListener("submit", (e) => {
     e.preventDefault();
-    searchBook();
   });
 
   if (isStorageExist()) {
@@ -44,33 +54,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+/**
+ * CUSTOM EVENT - RENDER_EVENTS:
+ *
+ * - digunakan untuk ...
+ */
 document.addEventListener(RENDER_EVENTS, () => {
-  const unfinished = document.getElementById("unFinished");
-  unfinished.innerHTML = "";
+  const inCompleted = document.getElementById("incompleteBookshelfList");
+  inCompleted.innerHTML = "";
 
-  const finished = document.getElementById("finished");
-  finished.innerHTML = "";
+  const completed = document.getElementById("completeBookshelfList");
+  completed.innerHTML = "";
 
   for (const book of books) {
     const bookElement = makeBook(book);
     if (book.isCompleted) {
-      finished.append(bookElement);
+      completed.append(bookElement);
     } else {
-      unfinished.append(bookElement);
+      inCompleted.append(bookElement);
     }
   }
 
   saveData();
-});
-
-document.addEventListener(SEARCH_EVENTS, () => {
-  const unfinished = document.getElementById("unFinished");
-  unfinished.innerHTML = "";
-
-  const finished = document.getElementById("finished");
-  finished.innerHTML = "";
-
-  //
 });
 
 /**
@@ -99,10 +104,10 @@ const createBook = () => {
 const editBook = (id) => {
   const book = books.find((book) => book.id === id);
   document.getElementById("bookId").value = book.id;
-  document.getElementById("title").value = book.title;
-  document.getElementById("author").value = book.author;
-  document.getElementById("year").value = book.year;
-  document.getElementById("bookIsCompleted").checked = book.isCompleted;
+  document.getElementById("inputBookTitle").value = book.title;
+  document.getElementById("inputBookAuthor").value = book.author;
+  document.getElementById("inputBookYear").value = book.year;
+  document.getElementById("inputBookIsComplete").checked = book.isCompleted;
   document.getElementById("bookSubmit").innerText = "Edit Book";
   document.getElementById("bookSubmit").removeAttribute("disabled");
   document.getElementById("bookSubmit").style.backgroundColor = `#6495ED`;
@@ -139,10 +144,6 @@ const toggleBook = (id) => {
   document.dispatchEvent(new Event(RENDER_EVENTS));
 };
 
-const searchBook = () => {
-  //
-};
-
 /**
  * UTILITY FUNCTION:
  *
@@ -156,10 +157,12 @@ const generateId = () => {
 const getValueInputBook = () => {
   const formBook = {};
   formBook["id"] = document.getElementById("bookId").value;
-  formBook["title"] = document.getElementById("title").value;
-  formBook["author"] = document.getElementById("author").value;
-  formBook["year"] = document.getElementById("year").value;
-  formBook["isCompleted"] = document.getElementById("bookIsCompleted").checked;
+  formBook["title"] = document.getElementById("inputBookTitle").value;
+  formBook["author"] = document.getElementById("inputBookAuthor").value;
+  formBook["year"] = document.getElementById("inputBookYear").value;
+  formBook["isCompleted"] = document.getElementById(
+    "inputBookIsComplete"
+  ).checked;
   formBook["button"] = document.getElementById("bookSubmit");
 
   return formBook;
@@ -199,7 +202,7 @@ const makeBook = (book) => {
   divButton.classList.add("action");
 
   const editButton = document.createElement("button");
-  editButton.classList.add("btn", "btn-warning");
+  editButton.classList.add("btn-warning");
   editButton.innerHTML = "Edit Buku";
 
   editButton.addEventListener("click", () => {
@@ -207,7 +210,7 @@ const makeBook = (book) => {
   });
 
   const deleteButton = document.createElement("button");
-  deleteButton.classList.add("btn", "btn-danger");
+  deleteButton.classList.add("btn-danger");
   deleteButton.innerText = "Hapus Buku";
 
   deleteButton.addEventListener("click", () => {
@@ -215,12 +218,12 @@ const makeBook = (book) => {
   });
 
   const bookItem = document.createElement("article");
-  bookItem.classList.add("book-item");
+  bookItem.classList.add("book_item");
 
   if (book.isCompleted) {
     title.style.textDecoration = "line-through";
     const unreadButton = document.createElement("button");
-    unreadButton.classList.add("btn", "btn-success");
+    unreadButton.classList.add("btn-success");
     unreadButton.innerText = "Belum selesai dibaca";
 
     unreadButton.addEventListener("click", () => {
@@ -230,7 +233,7 @@ const makeBook = (book) => {
     divButton.append(unreadButton);
   } else {
     const readButton = document.createElement("button");
-    readButton.classList.add("btn", "btn-success");
+    readButton.classList.add("btn-success");
     readButton.innerHTML = "Selesai Dibaca";
 
     readButton.addEventListener("click", () => {
