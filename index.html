@@ -16,36 +16,36 @@
 </head>
 
 <body>
-    <header>
-        <h1>Bookshelf Apps</h1>
+    <header class="head_bar">
+        <h1 class="head_bar__title">Bookshelf Apps</h1>
     </header>
 
     <main>
         <!-- section untuk form input buku -->
-        <section>
-            <h2 class="text-center">Masukan Buku Baru</h2>
-            <form id="inputBook" class="form-book" autocomplete="off">
+        <section class="input_section">
+            <h2>Masukan Buku Baru</h2>
+            <form id="inputBook" autocomplete="off">
                 <div class="input">
-                    <label for="title" class="form-label">Judul <span class="text-danger">*</span></label>
-                    <input type="text" id="title" class="form-control" placeholder="apa judul buku nya?"
-                        maxlength="45" />
+                    <label for="inputBookTitle" class="form-label">Judul <span class="text-danger">*</span></label>
+                    <input type="text" id="inputBookTitle" class="form-control"
+                        placeholder="what is the title of the book?" maxlength="45" autofocus />
                 </div>
 
                 <div class="input">
-                    <label for="author" class="form-label">Penulis <span class="text-danger">*</span></label>
-                    <input type="text" id="author" class="form-control" placeholder="siapa nama penulis buku?"
-                        maxlength="45" />
+                    <label for="inputBookAuthor" class="form-label">Penulis <span class="text-danger">*</span></label>
+                    <input type="text" id="inputBookAuthor" class="form-control"
+                        placeholder="what is the name of the author of the book?" maxlength="45" />
                 </div>
 
                 <div class="input">
-                    <label for="year" class="form-label">Tahun <span class="text-danger">*</span></label>
-                    <input type="number" id="year" class="form-control" placeholder="kapan buku diterbitkan?" min="1800"
-                        max="2022" />
+                    <label for="inputBookYear" class="form-label">Tahun <span class="text-danger">*</span></label>
+                    <input type="number" id="inputBookYear" class="form-control"
+                        placeholder="when was the book published?" min="1800" max="2022" />
                 </div>
 
-                <div class="input inline">
-                    <label for="bookIsCompleted" class="form-label">Selesai dibaca</label>
-                    <input type="checkbox" id="bookIsCompleted" />
+                <div class="input_inline">
+                    <label for="inputBookIsComplete" class="form-label">Selesai dibaca</label>
+                    <input type="checkbox" id="inputBookIsComplete" />
                 </div>
 
                 <button type="submit" id="bookSubmit" disabled>Masukkan Buku ke rak <strong>Belum selesai
@@ -55,31 +55,55 @@
         </section>
 
         <!-- section untuk form cari buku -->
-        <section>
-            <h2 class="text-center">Cari Buku (Opsional)</h2>
-            <form id="searchBook" class="form-search-book">
+        <section class="search_section">
+            <h2>Cari Buku (Opsional)</h2>
+            <form id="searchBook" autocomplete="off">
                 <label for="searchBookTitle">Judul</label>
-                <input type="text" id="searchBookTitle" maxlength="45" placeholder="ketik judul buku yang diinginkan" />
+                <input type="text" id="searchBookTitle" maxlength="45" placeholder="search book title..." />
                 <button type="submit" id="searchSubmit">Cari</button>
             </form>
         </section>
 
         <!-- section untuk buku yang belum selesai dibaca -->
-        <section class="bookshelf">
+        <section class="book_shelf">
             <h2>Belum selesai dibaca</h2>
 
-            <div id="unFinished" class="book-list"></div>
+            <div id="incompleteBookshelfList" class="book_list">
+                <!-- <article>
+                    <h3>Book Title</h3>
+                    <p>Penulis: John Doe</p>
+                    <p>Tahun: 2001</p>
+
+                    <div class="action">
+                        <button class="btn-success">Selesai dibaca</button>
+                        <button class="btn-warning">Edit buku</button>
+                        <button class="btn-danger">Hapus buku</button>
+                    </div>
+                </article> -->
+            </div>
         </section>
 
         <!-- section untuk buku yang selesai dibaca -->
-        <section class="bookshelf">
+        <section class="book_shelf">
             <h2>Selesai dibaca</h2>
 
-            <div id="finished" class="book-list"></div>
+            <div id="completeBookshelfList" class="book_list">
+                <!-- <article>
+                    <h3>Book Title</h3>
+                    <p>Penulis: John Doe</p>
+                    <p>Tahun: 2001</p>
+
+                    <div class="action">
+                        <button class="btn-success">Belum selesai dibaca</button>
+                        <button class="btn-warning">Edit buku</button>
+                        <button class="btn-danger">Hapus buku</button>
+                    </div>
+                </article> -->
+            </div>
         </section>
     </main>
 
-    <script src="js/script.js"></script>
+    <script src="js/main.min.js"></script>
 </body>
 
 </html>

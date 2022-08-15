@@ -1,23 +1,23 @@
 @media screen and (max-width: 576px) {
     /* search book */
-    .form-search-book {
+    .search_section > form {
         flex-direction: column;
         align-items: flex-start;
         gap: 0;
         padding: 0;
     }
 
-    .form-search-book input {
+    .search_section > form > input {
         margin-top: 0.5rem;
         margin-bottom: 1rem;
     }
 
-    .form-search-book button {
+    .search_section > form > button {
         width: 100%;
     }
 
     /* bookshelf */
-    .bookshelf .book-list {
+    .book_shelf > .book_list {
         padding: 0;
     }
 }
