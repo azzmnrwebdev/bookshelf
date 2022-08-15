@@ -205,16 +205,16 @@ section:last-child {
     cursor: pointer;
 }
 
-.book_shelf > .book_list > .book_item > .action > .btn-success {
+.book_shelf > .book_list > .book_item > .action > .btn_success {
     background-color: green;
     color: #fff;
 }
 
-.book_shelf > .book_list > .book_item > .action > .btn-warning {
+.book_shelf > .book_list > .book_item > .action > .btn_warning {
     background-color: yellow;
 }
 
-.book_shelf > .book_list > .book_item > .action > .btn-danger {
+.book_shelf > .book_list > .book_item > .action > .btn_danger {
     background-color: red;
     color: #fff
 }

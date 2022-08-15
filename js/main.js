@@ -1,13 +1,19 @@
-const books = [];
-const RENDER_EVENTS = "render-book";
-const STORAGE_KEY = "BOOKS_APPS";
+const books = []; // array kosong untuk menampung data buku
+const RENDER_EVENTS = "render-book"; // nama event custom yang disimpan ke var RENDER_EVENTS
+const STORAGE_KEY = "BOOKS_APPS"; // nama event custom yang disimpan ke var STORAGE_KEY
 
+// ketika halaman diload maka akan menjalankan code dibawah ini
 document.addEventListener("DOMContentLoaded", () => {
   const title = document.getElementById("inputBookTitle");
   const author = document.getElementById("inputBookAuthor");
   const year = document.getElementById("inputBookYear");
   const bookSubmitBook = document.getElementById("bookSubmit");
 
+  /**
+   * ketika hasil inputan title, author, year tidak string kosong, maka attribute disabled yang ada di bookSubmit akan hilang,
+   * dan backgroundColor nya menjadi 'cornflowerblue'. Jika hasil inputan nya kosong, maka akan di setAttribute 'disabled',
+   * dan backgroundColor akan berwarna abu-abu.
+   */
   document.getElementById("inputBook").addEventListener("input", () => {
     if (title.value !== "" && author.value !== "" && year.value !== "") {
       bookSubmitBook.removeAttribute("disabled");
@@ -18,13 +24,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  /**
+   * ketika formBook nya disubmit makan akan melakukan pengkondisian sesuai hasil inputan dari id book,
+   * jika hasil inputan id book nya tidak ada maka akan menjalankan function 'createBook()', jika hasil inputan id book nya ada,
+   * maka akan menjalankan function 'updateBook()'
+   *
+   * dan melakukan setAttribute 'disabled' pada button bookSubmit, backgroundColor berubah menjadi warna abu-abu,
+   * terakhir form nya akan di reset menjadi kosong.
+   */
   document.getElementById("inputBook").addEventListener("submit", (e) => {
     e.preventDefault();
     const bookID = document.getElementById("bookId").value;
-    if (bookID) {
-      updateBook();
-    } else {
+    if (!bookID) {
       createBook();
+    } else {
+      updateBook();
     }
 
     bookSubmitBook.setAttribute("disabled", "");
@@ -32,6 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
     e.target.reset();
   });
 
+  /**
+   * event 'keyup' ini ketika sebuah tombol keyboard dilepas
+   * melakukan pencarian data pada class 'book_item'
+   */
   document.getElementById("searchBookTitle").addEventListener("keyup", (e) => {
     const list = e.target.value.toLowerCase();
     let keyword = document.querySelectorAll(".book_item");
@@ -45,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // ketika formSearchBook disubmit maka tidak terjadi reload
   document.getElementById("searchBook").addEventListener("submit", (e) => {
     e.preventDefault();
   });
@@ -57,7 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
 /**
  * CUSTOM EVENT - RENDER_EVENTS:
  *
- * - digunakan untuk ...
+ * - digunakan untuk menampilkan book item ke halaman web dengan pengkondisian, jika isCompleted nya true,
+ * maka akan masuk ke dalam section 'selesai dibaca', jika isCompleted nya false maka akan masuk ke dalam section 'belum selesai dibaca'
  */
 document.addEventListener(RENDER_EVENTS, () => {
   const inCompleted = document.getElementById("incompleteBookshelfList");
@@ -202,16 +222,18 @@ const makeBook = (book) => {
   divButton.classList.add("action");
 
   const editButton = document.createElement("button");
-  editButton.classList.add("btn-warning");
-  editButton.innerHTML = "Edit Buku";
+  editButton.classList.add("btn_warning");
+  // editButton.innerHTML = "Edit Buku";
+  editButton.innerHTML = `<i class="fa-solid fa-pen"></i> Edit`;
 
   editButton.addEventListener("click", () => {
     editBook(book.id);
   });
 
   const deleteButton = document.createElement("button");
-  deleteButton.classList.add("btn-danger");
-  deleteButton.innerText = "Hapus Buku";
+  deleteButton.classList.add("btn_danger");
+  // deleteButton.innerText = "Hapus Buku";
+  deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i> Hapus`;
 
   deleteButton.addEventListener("click", () => {
     destroyBook(book.id);
@@ -223,8 +245,9 @@ const makeBook = (book) => {
   if (book.isCompleted) {
     title.style.textDecoration = "line-through";
     const unreadButton = document.createElement("button");
-    unreadButton.classList.add("btn-success");
-    unreadButton.innerText = "Belum selesai dibaca";
+    unreadButton.classList.add("btn_success");
+    // unreadButton.innerText = "Belum selesai dibaca";
+    unreadButton.innerHTML = `<i class="fa-solid fa-rotate-left"></i> Unread`;
 
     unreadButton.addEventListener("click", () => {
       toggleBook(book.id);
@@ -233,8 +256,9 @@ const makeBook = (book) => {
     divButton.append(unreadButton);
   } else {
     const readButton = document.createElement("button");
-    readButton.classList.add("btn-success");
-    readButton.innerHTML = "Selesai Dibaca";
+    readButton.classList.add("btn_success");
+    // readButton.innerText = "Selesai Dibaca";
+    readButton.innerHTML = `<i class="fa-solid fa-circle-check"></i> Read`;
 
     readButton.addEventListener("click", () => {
       toggleBook(book.id);
@@ -252,9 +276,10 @@ const makeBook = (book) => {
 /**
  * WEB STORAGE:
  *
- * - saveData() function untuk save data ke localStorage dalam bentuk tipe data string yang sudah di parsed
+ * - saveData() function untuk save data ke localStorage menggunakan method 'setItem() dalam bentuk tipe data string yang sudah di stringify
  * - isStorageExist() function untuk mengecek apakah browser yang digunakan mendukung 'Web Storage' atau tidak
- * - loadDataFromStorage() function ...
+ * - loadDataFromStorage() function load data dari storage dengan method 'getItem()' lalu di parsing dalam bentuk JSON,
+ * dan dilakukan pengkondisian, jika data nya tidak null atau ada, maka lakukan loop dengan for of kemudian di push ke dalam array books.
  */
 function saveData() {
   if (isStorageExist()) {
