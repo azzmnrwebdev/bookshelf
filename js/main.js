@@ -118,6 +118,11 @@ const createBook = () => {
   };
 
   books.push(book);
+  Swal.fire({
+    icon: "success",
+    title: "Data saved successfully!",
+    html: `Buku <strong>${formBook.title}</strong> berhasil ditambahkan dan disimpan ke Local Storage!`,
+  });
   document.dispatchEvent(new Event(RENDER_EVENTS));
 };
 
@@ -145,17 +150,37 @@ const updateBook = () => {
     isCompleted: formBook.isCompleted,
   };
 
+  Swal.fire({
+    icon: "success",
+    title: "Data updated successfully!",
+    html: `Buku <strong>${formBook.title}</strong> berhasil diupdate dan disimpan ke Local Storage!`,
+  });
   document.dispatchEvent(new Event(RENDER_EVENTS));
   formBook.button.innerHTML =
     "Masukkan Buku ke rak <strong>Belum selesai dibaca</strong>";
 };
 
 const destroyBook = (id) => {
-  if (confirm("Are you sure to delete this data?")) {
-    const bookTarget = books.findIndex((book) => book.id === id);
-    books.splice(bookTarget, 1);
-  }
-  document.dispatchEvent(new Event(RENDER_EVENTS));
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        "Data deleted successfully!",
+        "Your data has been deleted.",
+        "success"
+      );
+      const bookTarget = books.findIndex((book) => book.id === id);
+      books.splice(bookTarget, 1);
+      document.dispatchEvent(new Event(RENDER_EVENTS));
+    }
+  });
 };
 
 const toggleBook = (id) => {
