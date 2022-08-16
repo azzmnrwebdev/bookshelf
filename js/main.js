@@ -34,11 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   document.getElementById("inputBook").addEventListener("submit", (e) => {
     e.preventDefault();
-    const bookID = document.getElementById("bookId").value;
-    if (!bookID) {
-      createBook();
-    } else {
+    const bookID = document.getElementById("bookId");
+    if (bookID.value !== "") {
       updateBook();
+      bookID.removeAttribute('value')
+    } else {
+      createBook();
     }
 
     bookSubmitBook.setAttribute("disabled", "");
