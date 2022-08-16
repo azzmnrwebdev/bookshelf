@@ -182,6 +182,13 @@ const destroyBook = (id) => {
       document.dispatchEvent(new Event(RENDER_EVENTS));
     }
   });
+
+  document.getElementById("inputBook").reset();
+  document.getElementById("bookId").removeAttribute("value");
+  document.getElementById("bookSubmit").innerHTML =
+    "Masukkan Buku ke rak <strong>Belum selesai dibaca</strong>";
+  document.getElementById("bookSubmit").setAttribute("disabled", "");
+  document.getElementById("bookSubmit").style.backgroundColor = `#aeaeae`;
 };
 
 const toggleBook = (id) => {
@@ -249,7 +256,6 @@ const makeBook = (book) => {
 
   const editButton = document.createElement("button");
   editButton.classList.add("btn_warning");
-  // editButton.innerHTML = "Edit Buku";
   editButton.innerHTML = `<i class="fa-solid fa-pen"></i> Edit`;
 
   editButton.addEventListener("click", () => {
@@ -258,7 +264,6 @@ const makeBook = (book) => {
 
   const deleteButton = document.createElement("button");
   deleteButton.classList.add("btn_danger");
-  // deleteButton.innerText = "Hapus Buku";
   deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i> Hapus`;
 
   deleteButton.addEventListener("click", () => {
@@ -272,7 +277,6 @@ const makeBook = (book) => {
     title.style.textDecoration = "line-through";
     const unreadButton = document.createElement("button");
     unreadButton.classList.add("btn_success");
-    // unreadButton.innerText = "Belum selesai dibaca";
     unreadButton.innerHTML = `<i class="fa-solid fa-rotate-left"></i> Unread`;
 
     unreadButton.addEventListener("click", () => {
@@ -283,7 +287,6 @@ const makeBook = (book) => {
   } else {
     const readButton = document.createElement("button");
     readButton.classList.add("btn_success");
-    // readButton.innerText = "Selesai Dibaca";
     readButton.innerHTML = `<i class="fa-solid fa-circle-check"></i> Read`;
 
     readButton.addEventListener("click", () => {
